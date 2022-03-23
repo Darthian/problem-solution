@@ -19,6 +19,17 @@ public class ProblemSolutionServiceTest {
     @Test
     public void testInput() {
         String result = this.implementation.solveProblem(numbersArrayString);
-        Assertions.assertEquals("(2, 4)(4, 6)", result);
+        Assertions.assertEquals("2 4\n4 6\n", result);
+    }
+
+    @Test
+    public void testCases() {
+        numbersArrayString = "4,4,-2,-1,3";
+        String result = this.implementation.solveProblem(numbersArrayString);
+        Assertions.assertEquals("-2 -1\n3 4\n", result);
+
+        numbersArrayString = "5,-9,-5,9,10,12";
+        result = this.implementation.solveProblem(numbersArrayString);
+        Assertions.assertEquals("9 10\n", result);
     }
 }

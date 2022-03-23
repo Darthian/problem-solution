@@ -17,13 +17,14 @@ public class ProblemSolutionServiceImpl implements ProblemSolutionService {
     @Override
     public String solveProblem(String numbersArray) {
         List<Integer> sortedNumbers = getIntegers(numbersArray);
-        Collections.sort(sortedNumbers);
+
         final Integer lowestDifferenceValue = getLowestDifferenceValue(sortedNumbers);
+        System.out.println("LowestValue: " + lowestDifferenceValue);
         StringBuilder result = new StringBuilder();
         IntStream.range(0, sortedNumbers.size() - 1).forEach(
                 i -> {
-                    if (sortedNumbers.get(i + 1) - sortedNumbers.get(i) == lowestDifferenceValue) {
-                        result.append("(" + sortedNumbers.get(i) + ", " + sortedNumbers.get(i + 1) + ")");
+                    if (Math.abs(sortedNumbers.get(i + 1) - sortedNumbers.get(i)) == lowestDifferenceValue) {
+                        result.append(sortedNumbers.get(i) + " " + sortedNumbers.get(i + 1) + "\n");
                     }
                 });
         return result.toString();
@@ -32,23 +33,24 @@ public class ProblemSolutionServiceImpl implements ProblemSolutionService {
     private Integer getLowestDifferenceValue(List<Integer> sortedNumbers) {
         Integer differenceValue = 10;
         for (int i = 0; i < sortedNumbers.size() - 1; i++) {
-            Integer newDifference = sortedNumbers.get(i + 1) - sortedNumbers.get(i);
-            if (newDifference < differenceValue) {
+            Integer newDifference = Math.abs(sortedNumbers.get(i + 1) - sortedNumbers.get(i));
+            if (newDifference!=0 && newDifference < differenceValue) {
                 differenceValue = newDifference;
             }
         }
-
-        final Integer lowestDifferenceValue = differenceValue;
+        final Integer lowestDifferenceValue = Math.abs(differenceValue);
         return lowestDifferenceValue;
     }
 
     private List<Integer> getIntegers(String numbersArray) {
         List<Integer> numbers = Arrays.stream(numbersArray
-                        .replaceAll("[^a-zA-Z0-9,]", "")
+                        .replaceAll("[^a-zA-Z0-9,-]", "")
                         .replaceAll("\\s+", "")
                         .split(","))
                 .map(x -> Integer.valueOf(x).intValue()).collect(Collectors.toList());
-        List<Integer> sortedNumbers = numbers;
-        return sortedNumbers;
+        Collections.sort(numbers);
+        System.out.println("SortedValues: ");
+        numbers.stream().forEach(System.out::println);
+        return numbers;
     }
 }
